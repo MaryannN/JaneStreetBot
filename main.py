@@ -1,8 +1,6 @@
 #import os library - access the environmental variable 
 import os
 
-#discord.py library 
-import discord
 #commands module with the discord.ext global context -define ways to interact with bot
 from discord.ext import commands
 
@@ -23,13 +21,25 @@ async def on_message(message):
   if message.author == bot.user:
     return
 
+  #code so bot only greets when you greet it specifically 
+  if message.content == "Hello MaryannBot!":
+  
   #sends a message to the same channel that the message 
-  await message.channel.send("Hello world!")  
+    await message.channel.send("Hello world!")  
+
 
 #Log bot connection to console
 @bot.listen()
 async def on_ready():
   #fancy format for printing a string
   print(f'Connect to Discord as {bot.user}!')
+
+
+@bot.command()
+#ctx is a Context object - context in which the command was invoked
+#arg - additional argument 
+#only echos first word unless phrase is surrounded by quotes
+async def echo(ctx, arg):
+  await ctx.send(arg)
 
 bot.run(token)
