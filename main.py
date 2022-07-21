@@ -11,6 +11,9 @@ token = os.getenv('TOKEN')
 #command_prefix argument - defines how the bot identifies commands that it needs to handle
 bot = commands.Bot(command_prefix="$")
 
+'''
+Greeting
+'''
 
 #python decorator - lets us modify an object after its called
 #registering an event callback - bot listens for events, function after decorator will be called whenever there's a message event from the server
@@ -35,11 +38,23 @@ async def on_ready():
   print(f'Connect to Discord as {bot.user}!')
 
 
-@bot.command()
+
+'''
+Echo Command
+'''
+
+#adding documentation to the help command, can call echo cammand with $e
+@bot.command(name= "e", help="Echoes provided text back to the channel")
 #ctx is a Context object - context in which the command was invoked
 #arg - additional argument 
-#only echos first word unless phrase is surrounded by quotes
-async def echo(ctx, arg):
-  await ctx.send(arg)
+#asterisk lets us capture a varible number of arguments - captures tokens in the message aka echos whole message
 
+async def echo(ctx, *arg):
+  #arg is now a tuple of tokens so it has to be glued back together
+  await ctx.send(" ".join(arg))
+
+
+'''
+Closing
+'''
 bot.run(token)
