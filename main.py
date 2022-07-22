@@ -4,6 +4,15 @@ import os
 #commands module with the discord.ext global context -define ways to interact with bot
 from discord.ext import commands
 
+#import request libray to send requests to quotes API
+import requests
+
+#import json library for parsing json data
+import json
+
+#so we can pick a random quote
+import random
+
 #fetch TOKEN environmental variable, assign to token variable
 token = os.getenv('TOKEN')
 
@@ -52,6 +61,42 @@ Echo Command
 async def echo(ctx, *arg):
   #arg is now a tuple of tokens so it has to be glued back together
   await ctx.send(" ".join(arg))
+
+
+'''
+Inspirational Quotes
+'''
+#Using zenquotes.io API
+
+def get_quotes():
+  #makes HTTP request to the quote endpoint - asking website to give us some data using a specific protocol that the website knows how to respond to
+  #response - Response object containing the data from zenquotes.io + some server metadata
+  response = requests.get("https://zenquotes.io/api/quotes")
+  #load text into json format, quotes variable is a list of python dictionaries 
+  quotes = json.loads(response.text)
+  return quotes
+
+quotes = get_quotes()
+
+def get_quote():
+  quote = random.choice(quotes)
+  #formatting - backslashes so string doesn't end, 
+  quote = f"{quote['a']} said, \"{quote['q']}\""
+  return(quote)
+
+
+@bot.command(name="inspire", help="Send an inspirational quote to the channel")
+async def inspire(ctx, *args):
+  await ctx.send(get_quote())
+
+
+
+#note so self - maybe find a way to add my fav quotes, reflectly?
+
+'''
+Yoda
+'''
+#https://github.com/haohangxu/yoda-translator 
 
 
 '''
