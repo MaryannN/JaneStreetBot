@@ -13,6 +13,9 @@ import json
 #so we can pick a random quote
 import random
 
+#for the yoda thingy
+import yoda
+
 #fetch TOKEN environmental variable, assign to token variable
 token = os.getenv('TOKEN')
 
@@ -89,8 +92,6 @@ def get_quote():
 async def inspire(ctx, *args):
   await ctx.send(get_quote())
 
-
-
 #note so self - maybe find a way to add my fav quotes, reflectly?
 
 '''
@@ -98,6 +99,16 @@ Yoda
 '''
 #https://github.com/haohangxu/yoda-translator 
 
+def get_yodaquote():
+  quote = random.choice(quotes)
+  yodaquote = yoda.translate(quote['q'])
+  quote = f"Yoda-{quote['a']} said, \"{yodaquote}\""
+  return(quote)
+
+@bot.command(name="yoda", help="Send yoda-fied quote")
+
+async def inspire(ctx, *args):
+  await ctx.send(get_yodaquote())
 
 '''
 Closing
